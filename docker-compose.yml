@@ -1,0 +1,71 @@
+# Dev Infrastructure v1
+# Author John Lincoln <jlincoln88@gmail.com>
+
+version: '3.6'
+services:
+
+  # The Application (PHP-FPM)
+  app:
+    container_name: mc_app
+    build:
+      context: ./src
+      dockerfile: app.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ${APP_CODEBASE_ROOT_DIR}:/var/www
+    networks:
+      - main
+
+  # The Web Server
+  web:
+    container_name: mc_web
+    build:
+      context: ./src
+      dockerfile: web.dockerfile
+    working_dir: /var/www
+    volumes:
+      - ${APP_CODEBASE_ROOT_DIR}:/var/www
+    networks:
+      - main
+    ports:
+      - "${NGINX_HOST_PORT}:80"
+
+  # MariaDB
+  mariadb:
+    container_name: mc_db
+    build:
+      context: ./src
+      dockerfile: mariadb.dockerfile
+    environment:
+      - "MYSQL_DATABASE=${MYSQL_DATABASE}"
+      - "MYSQL_USER=${MYSQL_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - main
+    ports:
+      - "${MYSQL_HOST_CLIENT_PORT}:3306"
+
+  # Redis
+  redis:
+    container_name: mc_redis
+    build:
+      context: ./src
+      dockerfile: redis.dockerfile
+    volumes:
+      - redis:/data
+    networks:
+      - main
+    ports:
+      - "${REDIS_HOST_PORT}:6379"
+
+# Volumes
+volumes:
+  dbdata:
+  redis:
+
+# Networks
+networks:
+  main:
