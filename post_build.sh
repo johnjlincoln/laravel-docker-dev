@@ -1,6 +1,6 @@
 # -----------------------------------------
 # Dev Environment Post Build Script
-# This tries to start all MC related containers and runs artisan migrate
+# This tries to start all dev containers and runs artisan migrate
 # Example use: bash post_build.sh
 # -----------------------------------------
 printf "\n"

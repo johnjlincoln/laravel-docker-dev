@@ -6,7 +6,7 @@ services:
 
   # The Application (PHP-FPM)
   app:
-    container_name: mc_app
+    container_name: dev_app
     build:
       context: ./src
       dockerfile: app.dockerfile
@@ -18,7 +18,7 @@ services:
 
   # The Web Server
   web:
-    container_name: mc_web
+    container_name: dev_web
     build:
       context: ./src
       dockerfile: web.dockerfile
@@ -32,7 +32,7 @@ services:
 
   # MariaDB
   mariadb:
-    container_name: mc_db
+    container_name: dev_db
     build:
       context: ./src
       dockerfile: mariadb.dockerfile
@@ -48,9 +48,11 @@ services:
     ports:
       - "${MYSQL_HOST_CLIENT_PORT}:3306"
 
+  
+
   # Redis
   redis:
-    container_name: mc_redis
+    container_name: dev_redis
     build:
       context: ./src
       dockerfile: redis.dockerfile
